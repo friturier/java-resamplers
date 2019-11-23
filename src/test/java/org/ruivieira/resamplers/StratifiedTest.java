@@ -1,10 +1,14 @@
 package org.ruivieira.resamplers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-class MultinomialTest {
+import java.util.Arrays;
 
-    @org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.*;
+
+class StratifiedTest {
+
+    @Test
     void resample() {
 
         double[] weights = new double[100];
@@ -13,11 +17,14 @@ class MultinomialTest {
             weights[i] = Math.random();
         }
 
-        Resampler mn = new Multinomial();
+        Resampler mn = new Stratified();
 
         int[] indices = mn.resample(weights);
 
+        System.out.println(Arrays.toString(indices));
+
         assertEquals(100, indices.length);
+
 
     }
 }

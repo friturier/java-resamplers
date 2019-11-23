@@ -25,4 +25,15 @@ public class ResamplerUtils {
         }
         return cumulative;
     }
+
+    public static double[] linearSpace(double start, double end, int steps) {
+        final double[] result = new double[steps];
+
+        final double step = Math.abs(end - start) / (double) steps;
+
+        for (int i = 0 ; i < steps ; i++) {
+            result[i] = (float) i * step;
+        }
+        return result;
+    }
 }

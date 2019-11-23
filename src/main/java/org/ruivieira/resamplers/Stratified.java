@@ -2,14 +2,10 @@ package org.ruivieira.resamplers;
 
 import org.ruivieira.resamplers.utils.ResamplerUtils;
 
-public class Multinomial implements Resampler{
-
-
-    public Multinomial() {
-
-    }
+public class Stratified implements Resampler {
 
     public int[] resample(double[] weights) {
+
         final int N = weights.length;
 
         double[] nweights = ResamplerUtils.normalize(weights, ResamplerUtils.sum(weights));
@@ -17,12 +13,18 @@ public class Multinomial implements Resampler{
         double[] Q = ResamplerUtils.cumulativeSum(nweights);
 
         int[] indices = new int[N];
-        int i = 0;
 
-        while (i < N) {
-            double sample = Math.random();
-            int j = 0;
-            while (Q[j] < sample) {
+        final double[] T = ResamplerUtils.linearSpace(0.0, 1.0 - 1.0/(float) N, N);
+
+        for (int i = 0 ; i < N ; i++) {
+            T[i] += Math.random() / (float) N;
+        }
+
+        int i = 0;
+        int j = 0;
+
+        while (i < N && j < N) {
+            while (Q[j] < T[i]) {
                 j += 1;
             }
             indices[i] = j;
@@ -30,6 +32,8 @@ public class Multinomial implements Resampler{
         }
 
         return indices;
+
     }
+
 
 }
